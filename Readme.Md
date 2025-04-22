@@ -148,7 +148,7 @@ TaskManagement/
 
 ### 1. Clone the repository
 ```
-git clone "https://github.com/hasanpp/Task-management"
+git clone "https://github.com/hasanpp/Task-management.git"
 cd TaskManagement
 ```
 
