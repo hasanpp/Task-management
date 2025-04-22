@@ -136,10 +136,13 @@ View complete collection:
 ```
 TaskManagement/
 ├── admin_panel/
-├── tasks/
-├── users/
+├── static/
 ├── TaskManagement/  <-- settings and main urls.py
+├── tasks/
+├── templates/
+├── users/
 ├── db.sqlite3
+├── .env <-- credentials
 ├── requirements.txt
 └── manage.py
 ```
