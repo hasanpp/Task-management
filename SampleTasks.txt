@@ -1,0 +1,56 @@
+tasks = [
+    {
+        "title": "Prepare Monthly Sales Report",
+        "description": "Compile and analyze sales data for the month of March.",
+        "assigned_to": user1,
+        "due_date": now + timedelta(days=3),
+        "status": "Pending",
+        "completion_report": "",
+        "worked_hours": 0
+    },
+    {
+        "title": "Client Meeting - Project Alpha",
+        "description": "Attend client meeting and gather requirements for the new module.",
+        "assigned_to": user2,
+        "due_date": now + timedelta(days=1),
+        "status": "In Progress",
+        "completion_report": "",
+        "worked_hours": 2
+    },
+    {
+        "title": "Code Review for Ticket #452",
+        "description": "Review code submitted for bug fix on login module.",
+        "assigned_to": user3,
+        "due_date": now + timedelta(days=2),
+        "status": "Completed",
+        "completion_report": "Reviewed code, found minor improvements. Approved with comments.",
+        "worked_hours": 1.5
+    },
+    {
+        "title": "Design Homepage UI",
+        "description": "Create wireframes and final UI design for the revamped homepage.",
+        "assigned_to": user4,
+        "due_date": now + timedelta(days=5),
+        "status": "Pending",
+        "completion_report": "",
+        "worked_hours": 0
+    },
+    {
+        "title": "Database Optimization",
+        "description": "Analyze query performance and optimize slow queries in reports.",
+        "assigned_to": user1,
+        "due_date": now + timedelta(days=7),
+        "status": "In Progress",
+        "completion_report": "",
+        "worked_hours": 3
+    },
+    {
+        "title": "Weekly Team Meeting Notes",
+        "description": "Document key takeaways from this week's stand-up meetings.",
+        "assigned_to": user5,
+        "due_date": now + timedelta(days=1),
+        "status": "Completed",
+        "completion_report": "Uploaded notes in shared drive. Sent to all team members.",
+        "worked_hours": 0.5
+    }
+]

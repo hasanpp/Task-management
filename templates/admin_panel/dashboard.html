@@ -1,0 +1,51 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Dashboard - Task Management{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Tasks Overview</h5>
+                <p>Total Tasks: {{ total_tasks }}</p>
+                <p>Pending Tasks: {{ pending_tasks }}</p>
+                <p>In Progress Tasks: {{ in_progress_tasks }}</p>
+                <p>Completed Tasks: {{ completed_tasks }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Recent Task Reports</h5>
+                <ul class="list-group">
+                    {% for task in recent_completed_tasks %}
+                    <li class="list-group-item">
+                        <strong>{{ task.title }}</strong>
+                        <p class="mb-0"><small>Completed by: {{ task.assigned_to.username }}</small></p>
+                        <p class="mb-0"><small>Hours: {{ task.worked_hours }}</small></p>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">No recent completed tasks</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User Statistics</h5>
+                <p>Total Users: {{ total_users }}</p>
+                {% if admin_count %}
+                <p>Admins: {{ admin_count }}</p>
+
+                {% endif %}
+                <p>Regular Users: {{ user_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

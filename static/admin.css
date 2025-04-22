@@ -1,0 +1,21 @@
+.sidebar {
+    min-height: 100vh;
+    background-color: #343a40;
+    color: white;
+}
+.sidebar a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    display: block;
+    padding: 10px 15px;
+}
+.sidebar a:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.sidebar .nav-header {
+    padding: 10px 15px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+}

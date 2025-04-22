@@ -1,0 +1,75 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Task Reports - Task Management{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Task Completion Reports</h1>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Task Title</th>
+                    <th>Assigned To</th>
+                    <th>Completion Date</th>
+                    <th>Worked Hours</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in completed_tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.assigned_to.username }}</td>
+                    <td>{{ task.updated_at|date:"Y-m-d H:i" }}</td>
+                    <td>{{ task.worked_hours }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewReportModal{{ task.id }}">View Report</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No completed tasks found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% for task in completed_tasks %}
+<div class="modal fade" id="viewReportModal{{ task.id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Task Report: {{ task.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Assigned To:</strong> {{ task.assigned_to.username }}</p>
+                        <p><strong>Completed On:</strong> {{ task.updated_at|date:"Y-m-d H:i" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Due Date:</strong> {{ task.due_date|date:"Y-m-d H:i" }}</p>
+                        <p><strong>Worked Hours:</strong> {{ task.worked_hours }}</p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h6>Task Description:</h6>
+                    <div class="p-2 bg-light border rounded">{{ task.description }}</div>
+                </div>
+                <div>
+                    <h6>Completion Report:</h6>
+                    <div class="p-2 bg-light border rounded">{{ task.completion_report }}</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
