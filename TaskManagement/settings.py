@@ -9,7 +9,6 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
-JWT_SECRET_KEY ="XU1Nmf0Kdo1KpoBzU7U2BPbcyhyvIuKNZd0U1pJzjfjsL45aYdjvSMvlrb55IPKvoTDehEFJTDLxeCHyvnl3DQ"
 DEBUG = os.getenv('DEBUG', 'False').lower() in ['true', '1', 'yes']
 
 ALLOWED_HOSTS = ['*']
