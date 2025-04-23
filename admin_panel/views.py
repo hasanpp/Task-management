@@ -38,11 +38,10 @@ def admin_dashboard(request):
     if not hasattr(request.user, 'role') or (request.user.role != User.ADMIN and request.user.role != User.SUPER_ADMIN):
         return HttpResponseForbidden("You don't have permission to access this page")
     
-    # Get task statistics
     if request.user.role == User.SUPER_ADMIN:
         tasks = Task.objects.all()
         users = User.objects.all()
-    else:  # Admin
+    else:
         users = User.objects.filter(admin=request.user)
         tasks = Task.objects.filter(assigned_to__admin=request.user)
     
@@ -191,7 +190,6 @@ def admin_admins(request):
     return render(request, 'admin_panel/admins.html', context)
 
 
-
 @login_required
 @superadmin_required
 def admin_add_admin(request):
@@ -203,7 +201,6 @@ def admin_add_admin(request):
         if len(username.replace(" ","")) == 0 or not username:
             messages.error(request, f"Username can't be none or empty.")
             return redirect('admin_users')
-        
         if len(email.replace(" ","")) == 0 or not email:
             messages.error(request, f"Username can't be none or empty.")
             return redirect('admin_users')
@@ -236,7 +233,6 @@ def admin_demote_admin(request, admin_id):
     if request.method == 'POST':
         admin.role = User.USER
         admin.save()
-        
         new_admin_id = request.POST.get('new_admin')
         if new_admin_id:
             new_admin = get_object_or_404(User, id=new_admin_id, role=User.ADMIN)
@@ -254,7 +250,6 @@ def admin_delete_admin(request, admin_id):
     admin = get_object_or_404(User, id=admin_id, role=User.ADMIN)
     
     if request.method == 'POST':
-        # Reassign users previously assigned to this admin
         new_admin_id = request.POST.get('new_admin')
         if new_admin_id:
             new_admin = get_object_or_404(User, id=new_admin_id, role=User.ADMIN)
@@ -264,9 +259,9 @@ def admin_delete_admin(request, admin_id):
         
         username = admin.username
         admin.delete()
-        messages.success(request, f"Admin {username} deleted successfully.")
-    
+        messages.success(request, f"Admin {username} deleted successfully.")    
     return redirect('admin_admins')
+
 @login_required
 @superadmin_required
 def admin_assign_user(request, admin_id):
@@ -285,11 +280,11 @@ def admin_assign_user(request, admin_id):
 @login_required
 @admin_required
 def admin_tasks(request):
-    # Get users based on role
+    
     if request.user.role == User.SUPER_ADMIN:
         users = User.objects.filter(role=User.USER)
         tasks = Task.objects.all().select_related('assigned_to')
-    else:  # Admin
+    else:
         users = User.objects.filter(admin=request.user, role=User.USER)
         tasks = Task.objects.filter(assigned_to__admin=request.user).select_related('assigned_to')
     
@@ -312,7 +307,6 @@ def admin_add_task(request):
         
         assigned_to = get_object_or_404(User, id=assigned_to_id)
         
-        # Check if the user is under this admin's management (if admin)
         if request.user.role == User.ADMIN and assigned_to.admin != request.user:
             messages.error(request, "You can only assign tasks to users under your management.")
             return redirect('admin_tasks')
@@ -326,7 +320,6 @@ def admin_add_task(request):
             status=status
         )
         
-        # If task is being created as completed, add completion report and worked hours
         if status == Task.STATUS_COMPLETED:
             completion_report = request.POST.get('completion_report')
             worked_hours = request.POST.get('worked_hours')
@@ -347,22 +340,21 @@ def admin_add_task(request):
 @login_required
 @admin_required
 def admin_edit_task(request, task_id):
-    # Get task and check permissions
+    
     if request.user.role == User.SUPER_ADMIN:
         task = get_object_or_404(Task, id=task_id)
     else:  # Admin
         task = get_object_or_404(Task, id=task_id, assigned_to__admin=request.user)
     
     if request.method == 'POST':
+        
         title = request.POST.get('title')
         description = request.POST.get('description')
         assigned_to_id = request.POST.get('assigned_to')
         due_date = request.POST.get('due_date')
         status = request.POST.get('status')
-        
         assigned_to = get_object_or_404(User, id=assigned_to_id)
         
-        # Check if the user is under this admin's management (if admin)
         if request.user.role == User.ADMIN and assigned_to.admin != request.user:
             messages.error(request, "You can only assign tasks to users under your management.")
             return redirect('admin_tasks')
@@ -372,7 +364,6 @@ def admin_edit_task(request, task_id):
         task.assigned_to = assigned_to
         task.due_date = due_date
         
-        # If task status is changing to completed, ensure completion report and worked hours
         if status == Task.STATUS_COMPLETED and task.status != Task.STATUS_COMPLETED:
             completion_report = request.POST.get('completion_report')
             worked_hours = request.POST.get('worked_hours')
@@ -395,10 +386,10 @@ def admin_edit_task(request, task_id):
 @login_required
 @admin_required
 def admin_delete_task(request, task_id):
-    # Get task and check permissions
+    
     if request.user.role == User.SUPER_ADMIN:
         task = get_object_or_404(Task, id=task_id)
-    else:  # Admin
+    else:
         task = get_object_or_404(Task, id=task_id, assigned_to__admin=request.user)
     
     if request.method == 'POST':
@@ -411,10 +402,10 @@ def admin_delete_task(request, task_id):
 @login_required
 @admin_required
 def admin_task_reports(request):
-    # Get completed tasks based on role
+    
     if request.user.role == User.SUPER_ADMIN:
         completed_tasks = Task.objects.filter(status=Task.STATUS_COMPLETED).select_related('assigned_to')
-    else:  # Admin
+    else:
         completed_tasks = Task.objects.filter(
             status=Task.STATUS_COMPLETED, 
             assigned_to__admin=request.user
